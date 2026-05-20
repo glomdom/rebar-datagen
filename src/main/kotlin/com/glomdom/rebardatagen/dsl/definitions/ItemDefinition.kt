@@ -1,0 +1,3 @@
+﻿package com.glomdom.rebardatagen.dsl.definitions
+
+data class ItemDefinition(val id: String, val name: String, val lore: List<String>, val waila: String)
