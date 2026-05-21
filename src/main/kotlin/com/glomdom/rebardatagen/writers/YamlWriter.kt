@@ -5,8 +5,8 @@ import com.glomdom.rebardatagen.dsl.definitions.SettingsDefinition
 import java.nio.file.Files
 import java.nio.file.Path
 
-class YamlWriter() : IWriter {
-    override fun writeTo(model: AddonDefinition, outDir: Path) {
+class YamlWriter() {
+    fun writeTo(model: AddonDefinition, outDir: Path) {
         val translationsPath = outDir.resolve("lang/en.yml")
 
         Files.createDirectories(translationsPath.parent)
