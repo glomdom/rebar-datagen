@@ -5,55 +5,55 @@ import com.glomdom.rebardatagen.dsl.definitions.SettingsDefinition
 import java.nio.file.Files
 import java.nio.file.Path
 
-class YamlWriter(private val addonDefinition: AddonDefinition) {
-    fun writeTo(root: Path) {
-        val translationsPath = root.resolve("lang/en.yml")
+class YamlWriter() : IWriter {
+    override fun writeTo(model: AddonDefinition, outDir: Path) {
+        val translationsPath = outDir.resolve("lang/en.yml")
 
         Files.createDirectories(translationsPath.parent)
-        Files.createDirectories(root.resolve("settings/"))
-        Files.writeString(translationsPath, buildTranslationYml())
+        Files.createDirectories(outDir.resolve("settings/"))
+        Files.writeString(translationsPath, buildTranslationYml(model))
 
-        for (settingsDefinition in addonDefinition.settings) {
-            Files.writeString(root.resolve("settings/${settingsDefinition.key}.yml"), buildSettingsYml(settingsDefinition))
+        for (settingsDefinition in model.settings) {
+            Files.writeString(outDir.resolve("settings/${settingsDefinition.key}.yml"), buildSettingsYml(settingsDefinition))
         }
     }
 
-    private fun buildTranslationYml(): String = buildString {
-        appendLine("addon: \"${addonDefinition.name}\"")
-        append(buildGuidePages())
-        append(buildGuis())
-        append(buildItems())
-        append(buildInventories())
+    private fun buildTranslationYml(model: AddonDefinition): String = buildString {
+        appendLine("addon: \"${model.name}\"")
+        append(buildGuidePages(model))
+        append(buildGuis(model))
+        append(buildItems(model))
+        append(buildInventories(model))
     }
 
-    private fun buildGuidePages(): String = buildString {
-        if (addonDefinition.guidePages.isEmpty()) return@buildString
+    private fun buildGuidePages(model: AddonDefinition): String = buildString {
+        if (model.guidePages.isEmpty()) return@buildString
 
         appendLine("guide:")
         appendLine("  page:")
 
-        for (page in addonDefinition.guidePages) {
+        for (page in model.guidePages) {
             appendLine("    ${page.id}: \"${page.title}\"")
         }
     }
 
-    private fun buildGuis(): String = buildString {
-        if (addonDefinition.guis.isEmpty()) return@buildString
+    private fun buildGuis(model: AddonDefinition): String = buildString {
+        if (model.guis.isEmpty()) return@buildString
 
         appendLine("gui:")
-        for (guiDefinition in addonDefinition.guis) {
+        for (guiDefinition in model.guis) {
             for (item in guiDefinition.items) {
                 appendLine("  ${item.id}: \"${item.name}\"")
             }
         }
     }
 
-    private fun buildItems(): String = buildString {
-        if (addonDefinition.items.isEmpty()) return@buildString
+    private fun buildItems(model: AddonDefinition): String = buildString {
+        if (model.items.isEmpty()) return@buildString
 
         appendLine("item:")
 
-        for (item in addonDefinition.items) {
+        for (item in model.items) {
             appendLine("  ${item.id}:")
             appendLine("    name: \"${item.name}\"")
 
@@ -70,12 +70,12 @@ class YamlWriter(private val addonDefinition: AddonDefinition) {
         }
     }
 
-    private fun buildInventories(): String = buildString {
-        if (addonDefinition.inventories.isEmpty()) return@buildString
+    private fun buildInventories(model: AddonDefinition): String = buildString {
+        if (model.inventories.isEmpty()) return@buildString
 
         appendLine("inventory:")
 
-        for (inventory in addonDefinition.inventories) {
+        for (inventory in model.inventories) {
             for (display in inventory.displays) {
                 appendLine("  ${display.id}: ${display.name}")
             }
