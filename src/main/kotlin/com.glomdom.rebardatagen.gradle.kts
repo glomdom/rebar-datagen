@@ -37,4 +37,8 @@ project.plugins.withId("org.jetbrains.kotlin.jvm") {
     sourceSets.named("main") {
         resources.srcDir(runDatagen)
     }
+
+    project.dependencies {
+        add("datagenImplementation", "org.jetbrains.kotlin:kotlin-stdlib")
+    }
 }
