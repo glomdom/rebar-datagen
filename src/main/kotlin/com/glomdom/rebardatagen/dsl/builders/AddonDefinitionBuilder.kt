@@ -3,7 +3,7 @@
 import com.glomdom.rebardatagen.annotations.AddonDsl
 import com.glomdom.rebardatagen.dsl.definitions.AddonDefinition
 import com.glomdom.rebardatagen.dsl.definitions.GuiDefinition
-import com.glomdom.rebardatagen.dsl.definitions.GuidePageDefinition
+import com.glomdom.rebardatagen.dsl.definitions.GuideDefinition
 import com.glomdom.rebardatagen.dsl.definitions.InventoriesDefinition
 import com.glomdom.rebardatagen.dsl.definitions.ItemDefinition
 import com.glomdom.rebardatagen.dsl.definitions.SettingsDefinition
@@ -11,7 +11,7 @@ import com.glomdom.rebardatagen.dsl.definitions.SettingsDefinition
 @AddonDsl
 class AddonDefinitionBuilder {
     private var addon: String? = null
-    private val guidePages = mutableListOf<GuidePageDefinition>()
+    private val guides = mutableListOf<GuideDefinition>()
     private val items = mutableListOf<ItemDefinition>()
     private val settings = mutableListOf<SettingsDefinition>()
     private val guis = mutableListOf<GuiDefinition>()
@@ -21,8 +21,8 @@ class AddonDefinitionBuilder {
         addon = value
     }
 
-    fun guide(block: PagesBuilder.() -> Unit) {
-        guidePages += PagesBuilder().apply(block).build()
+    fun guide(block: GuideBuilder.() -> Unit) {
+        guides += GuideBuilder().apply(block).build()
     }
 
     fun items(block: ItemsBuilder.() -> Unit) {
@@ -47,7 +47,7 @@ class AddonDefinitionBuilder {
     fun build(): AddonDefinition {
         return AddonDefinition(
             name = requireNotNull(addon) { "Missing addon name" },
-            guidePages = guidePages,
+            guides = guides,
             items = items,
             settings = settings,
             guis = guis,

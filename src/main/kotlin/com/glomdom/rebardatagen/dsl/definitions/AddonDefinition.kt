@@ -2,7 +2,7 @@
 
 data class AddonDefinition(
     val name: String,
-    val guidePages: List<GuidePageDefinition>,
+    val guides: List<GuideDefinition>,
     val items: List<ItemDefinition>,
     val settings: List<SettingsDefinition>,
     val guis: List<GuiDefinition>,

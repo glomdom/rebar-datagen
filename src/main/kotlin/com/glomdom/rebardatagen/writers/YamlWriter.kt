@@ -14,26 +14,37 @@ class YamlWriter() {
         Files.writeString(translationsPath, buildTranslationYml(model))
 
         for (settingsDefinition in model.settings) {
-            Files.writeString(outDir.resolve("settings/${settingsDefinition.key}.yml"), buildSettingsYml(settingsDefinition))
+            Files.writeString(
+                outDir.resolve("settings/${settingsDefinition.key}.yml"),
+                buildSettingsYml(settingsDefinition)
+            )
         }
     }
 
     private fun buildTranslationYml(model: AddonDefinition): String = buildString {
         appendLine("addon: \"${model.name}\"")
-        append(buildGuidePages(model))
+        append(buildGuides(model))
         append(buildGuis(model))
         append(buildItems(model))
         append(buildInventories(model))
     }
 
-    private fun buildGuidePages(model: AddonDefinition): String = buildString {
-        if (model.guidePages.isEmpty()) return@buildString
+    private fun buildGuides(model: AddonDefinition): String = buildString {
+        if (model.guides.isEmpty()) return@buildString
 
-        appendLine("guide:")
-        appendLine("  page:")
+        for (guide in model.guides) {
+            appendLine("guide:")
+            appendLine("  page:")
 
-        for (page in model.guidePages) {
-            appendLine("    ${page.id}: \"${page.title}\"")
+            for (page in guide.pages) {
+                appendLine("    ${page.id}: \"${page.title}\"")
+            }
+
+            appendLine("  recipe:")
+
+            for (recipe in guide.recipes) {
+                appendLine("    ${recipe.id}: \"${recipe.name}\"")
+            }
         }
     }
 
