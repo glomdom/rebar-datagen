@@ -6,5 +6,6 @@ data class AddonDefinition(
     val items: List<ItemDefinition>,
     val settings: List<SettingsDefinition>,
     val guis: List<GuiDefinition>,
-    val inventories: MutableList<InventoriesDefinition>
+    val inventories: List<InventoriesDefinition>,
+    val units: List<UnitDefinition>,
 )
