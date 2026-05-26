@@ -2,6 +2,7 @@
 
 import com.glomdom.rebardatagen.dsl.definitions.AddonDefinition
 import com.glomdom.rebardatagen.dsl.definitions.SettingsDefinition
+import com.glomdom.rebardatagen.dsl.definitions.UnitDefinition
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -27,6 +28,7 @@ class YamlWriter() {
         append(buildGuis(model))
         append(buildItems(model))
         append(buildInventories(model))
+        append(buildUnits(model))
     }
 
     private fun buildGuides(model: AddonDefinition): String = buildString {
@@ -112,6 +114,19 @@ class YamlWriter() {
                     error("Unsupported settings entry value type for key `${entry.key}`: ${value::class.qualifiedName}")
                 }
             }
+        }
+    }
+
+    private fun buildUnits(model: AddonDefinition): String = buildString {
+        if (model.units.isEmpty()) return@buildString
+
+        appendLine("unit:")
+
+        for (unit in model.units) {
+            appendLine("  ${unit.id}:")
+            appendLine("    singular: \"${unit.singular}\"")
+            appendLine("    plural: \"${unit.plural}\"")
+            appendLine("    singular: \"${unit.abbreviation}\"".takeIf { unit.abbreviation != null })
         }
     }
 }

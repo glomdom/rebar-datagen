@@ -7,6 +7,7 @@ import com.glomdom.rebardatagen.dsl.definitions.GuideDefinition
 import com.glomdom.rebardatagen.dsl.definitions.InventoriesDefinition
 import com.glomdom.rebardatagen.dsl.definitions.ItemDefinition
 import com.glomdom.rebardatagen.dsl.definitions.SettingsDefinition
+import com.glomdom.rebardatagen.dsl.definitions.UnitDefinition
 
 @AddonDsl
 class AddonDefinitionBuilder {
@@ -16,6 +17,7 @@ class AddonDefinitionBuilder {
     private val settings = mutableListOf<SettingsDefinition>()
     private val guis = mutableListOf<GuiDefinition>()
     private val inventories = mutableListOf<InventoriesDefinition>()
+    private val units = mutableListOf<UnitDefinition>()
 
     fun addon(value: String) {
         addon = value
@@ -44,6 +46,10 @@ class AddonDefinitionBuilder {
         inventories += InventoriesBuilder().apply(block).build()
     }
 
+    fun units(name: String, block: UnitBuilder.() -> Unit) {
+        units += UnitBuilder(name).apply(block).build()
+    }
+
     fun build(): AddonDefinition {
         return AddonDefinition(
             name = requireNotNull(addon) { "Missing addon name" },
@@ -52,6 +58,7 @@ class AddonDefinitionBuilder {
             settings = settings,
             guis = guis,
             inventories = inventories,
+            units = units,
         )
     }
 }
