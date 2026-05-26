@@ -126,7 +126,10 @@ class YamlWriter() {
             appendLine("  ${unit.id}:")
             appendLine("    singular: \"${unit.singular}\"")
             appendLine("    plural: \"${unit.plural}\"")
-            appendLine("    singular: \"${unit.abbreviation}\"".takeIf { unit.abbreviation != null })
+
+            if (unit.abbreviation != null) {
+                appendLine("    abbreviation: \"${unit.abbreviation}\"")
+            }
         }
     }
 }
